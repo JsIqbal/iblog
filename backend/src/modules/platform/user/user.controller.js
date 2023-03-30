@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const User = require("../user/user.modal");
 
 const register = async (req, res, next) => {
@@ -37,6 +38,21 @@ const login = async (req, res, next) => {
         if (!user || !user.password || !user.validPassword(password)) {
             return res.status(400).send({ message: "Invalid Credentials" });
         }
+
+        const token = jwt.sign(
+            {
+                id: user.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
+            "my-secret",
+            { expiresIn: "1h", issuer: user.email }
+        );
+
+        res.cookie("access_token", token, {
+            httpOnly: true,
+        });
         res.status(200).send({ message: "Logged In Successfully" });
     } catch (err) {
         console.log(err);
