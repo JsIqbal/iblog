@@ -3,7 +3,6 @@ import Typography from "../../../core/common/typography.component";
 import { loginSchema } from "../user.schema";
 import useLogin from "../hooks/useLogin";
 import LoginForm from "./login-form.component";
-// import useLogin from "../hooks/useLogin";
 
 const Login: React.FC = () => {
     const { initialValues, handleSubmit } = useLogin();

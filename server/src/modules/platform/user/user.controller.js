@@ -52,9 +52,11 @@ const login = async (req, res, next) => {
         res.cookie("access_token", token, {
             httpOnly: true,
         });
-        res.status(200).send({ message: "Logged In Successfully" });
+        res.status(200).send({
+            message: "Logged In Successfully",
+            token: token,
+        });
     } catch (err) {
-        console.log(err);
         res.status(500).send({ message: "Internal Server Error" });
     }
 };

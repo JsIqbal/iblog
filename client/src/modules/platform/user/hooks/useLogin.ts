@@ -16,7 +16,7 @@ const useLogin = () => {
         await login(values).then((response: any) => {
             localStorage.setItem("userType", response.data.userType);
             localStorage.setItem("access", response.data.access);
-            window.location.href = "/";
+            // window.location.href = "/";
         });
         actions.setSubmitting(false);
     };

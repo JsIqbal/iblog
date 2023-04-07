@@ -1,16 +1,14 @@
 import axios from "axios";
 
 export async function login(loginData: any) {
-    // const data = new FormData();
-    // data.append("email", loginData.username);
-    // data.append("password", loginData.password);
     console.log(loginData);
     try {
         const res = await axios.post(
             "http://localhost:3001/users/login",
             loginData
         );
-        console.log("----------------------------", res);
+        console.log("-------------response---------------", res);
+        console.log("--------------cookie--------------", document.cookie); // <--- Here, log the cookie
         return res;
     } catch (err) {
         // window.location.href = "/";
