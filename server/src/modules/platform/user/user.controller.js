@@ -45,7 +45,7 @@ const login = async (req, res, next) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
             },
-            "my-secret",
+            process.env.TOKEN_SECRET,
             { expiresIn: "1h", issuer: user.email }
         );
 

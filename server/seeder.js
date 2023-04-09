@@ -1,14 +1,26 @@
 const async = require("async");
 const path = require("path");
 
-async function init() {
-    const sequelize = require("./src/config/lib/sequelize");
+const config = require("./src/config");
+const sequelize = require("./src/config/lib/sequelize");
 
-    await sequelize.query(`CREATE DATABASE IF NOT EXISTS ecommerce`);
+async function init() {
+    config.initEnvironmentVariables();
+
+    await sequelize.query(
+        `CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`
+    );
+
     const User = require(path.join(
         process.cwd(),
         "src/modules/platform/user/user.modal.js"
     ));
+    const Profile = require(path.join(
+        process.cwd(),
+        "src/modules/platform/profile/profile.modal"
+    ));
+
+    await sequelize.sync();
 
     function userSeeder(callback) {
         User.findOrCreate({
@@ -23,7 +35,41 @@ async function init() {
         });
     }
 
-    async.waterfall([userSeeder], (err) => {
+    function profileSeeder(userId, callback) {
+        const profiles = [
+            {
+                name: "System Admin",
+                description: "All the previlages",
+                type: "standard",
+                created_by: userId,
+                updated_by: userId,
+            },
+            {
+                name: "Writer",
+                description: "Only Write Content",
+                type: "standard",
+                created_by: userId,
+                updated_by: userId,
+            },
+            {
+                name: "Reader",
+                description: "Only Read Content",
+                type: "standard",
+                created_by: userId,
+                updated_by: userId,
+            },
+        ];
+        Profile.destroy({ truncate: { cascade: true } }).then(() => {
+            Profile.bulkCreate(profiles, {
+                returning: true,
+                ignoreDuplicates: false,
+            }).then(() => {
+                callback(null, userId);
+            });
+        });
+    }
+
+    async.waterfall([userSeeder, profileSeeder], (err) => {
         if (err) console.error(err);
         else console.log("DB seed completed");
         process.exit();

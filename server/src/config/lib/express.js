@@ -10,11 +10,10 @@ module.exports = () => {
         credentials: true,
         origin: (origin, callback) => {
             return callback(null, true);
-
-            callback(new Error("Not allowed by CORS"));
         },
     };
     app.use(cors(corsOptions));
+    app.set("port", process.env.PORT);
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +22,10 @@ module.exports = () => {
 
     globalConfig.routes.forEach((routePath) => {
         require(path.resolve(routePath))(app);
+    });
+
+    globalConfig.strategies.forEach((strategyPath) => {
+        require(path.resolve(strategyPath))();
     });
 
     return app;

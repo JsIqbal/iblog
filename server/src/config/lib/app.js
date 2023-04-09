@@ -1,7 +1,7 @@
 module.exports.start = () => {
     const app = require("./express")();
 
-    app.listen(3001, (err, res) => {
-        console.log("Server listening on port 3001...");
+    app.listen(app.get("port"), (err, res) => {
+        console.log(`Server listening on port ${app.get("port")}...`);
     });
 };

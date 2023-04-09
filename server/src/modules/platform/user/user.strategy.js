@@ -17,7 +17,7 @@ module.exports = () => {
         "user-jwt",
         new Strategy(
             {
-                secretOrKey: "my-secret",
+                secretOrKey: process.env.TOKEN_SECRET,
                 jwtFromRequest: cookieExtractor,
             },
             function (payload, done) {
