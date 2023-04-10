@@ -1,6 +1,6 @@
 const passport = require("passport");
 
-const UserStrategy = (req, res, next) => {
+const AuthStrategy = (req, res, next) => {
     const auth = passport.authenticate("user-jwt", async (error, user) => {
         if (error) {
             return res.status(500).send("Internal server error.");
@@ -28,4 +28,4 @@ const UserStrategy = (req, res, next) => {
     auth(req, res, next);
 };
 
-module.exports = UserStrategy;
+module.exports = AuthStrategy;

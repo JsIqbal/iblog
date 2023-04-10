@@ -48,13 +48,15 @@ const login = async (req, res, next) => {
             process.env.TOKEN_SECRET,
             { expiresIn: "1h", issuer: user.email }
         );
+        user.dataValues.token = token;
+        delete user.dataValues.password;
 
         res.cookie("access_token", token, {
             httpOnly: true,
         });
         res.status(200).send({
             message: "Logged In Successfully",
-            token: token,
+            user,
         });
     } catch (err) {
         res.status(500).send({ message: "Internal Server Error" });
