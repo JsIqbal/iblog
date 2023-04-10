@@ -19,6 +19,14 @@ async function init() {
         process.cwd(),
         "src/modules/platform/profile/profile.modal"
     ));
+    const Permission = require(path.join(
+        process.cwd(),
+        "src/modules/platform/permission/permission.modal"
+    ));
+    const Service = require(path.join(
+        process.cwd(),
+        "src/modules/platform/service/service.modal"
+    ));
 
     await sequelize.sync();
 
@@ -35,32 +43,76 @@ async function init() {
         });
     }
 
-    function profileSeeder(userId, callback) {
-        const profiles = [
+    // function profileSeeder(userId, callback) {
+    //     const profiles = [
+    //         {
+    //             name: "System Admin",
+    //             description: "All the previlages",
+    //             type: "standard",
+    //             created_by: userId,
+    //             updated_by: userId,
+    //         },
+    //         {
+    //             name: "Writer",
+    //             description: "Only Write Content",
+    //             type: "standard",
+    //             created_by: userId,
+    //             updated_by: userId,
+    //         },
+    //         {
+    //             name: "Reader",
+    //             description: "Only Read Content",
+    //             type: "standard",
+    //             created_by: userId,
+    //             updated_by: userId,
+    //         },
+    //     ];
+    //     Profile.destroy({ truncate: { cascade: true } }).then(() => {
+    //         Profile.bulkCreate(profiles, {
+    //             returning: true,
+    //             ignoreDuplicates: false,
+    //         }).then(() => {
+    //             callback(null, userId);
+    //         });
+    //     });
+    // }
+
+    // function userUpdateSeeder(userId, callback) {
+    //     User.findOne({ where: { id: userId } }).then((admin) => {
+    //         Profile.findOne({ where: { name: "System Admin" } }).then(
+    //             (systemAdminProfile) => {
+    //                 admin.update({ profile_id: systemAdminProfile.id });
+
+    //                 callback(null, userId);
+    //             }
+    //         );
+    //     });
+    // }
+
+    function serviceSeeder(userId, callback) {
+        const services = [
             {
-                name: "System Admin",
-                description: "All the previlages",
-                type: "standard",
+                name: "User Management",
+                description: "Service Created by System Administrator",
                 created_by: userId,
                 updated_by: userId,
             },
             {
-                name: "Writer",
-                description: "Only Write Content",
-                type: "standard",
+                name: "Profile Management",
+                description: "Service Created by System Administrator",
                 created_by: userId,
                 updated_by: userId,
             },
             {
-                name: "Reader",
-                description: "Only Read Content",
-                type: "standard",
+                name: "Customer Management",
+                description: "Service Created by System Administrator",
                 created_by: userId,
                 updated_by: userId,
             },
         ];
-        Profile.destroy({ truncate: { cascade: true } }).then(() => {
-            Profile.bulkCreate(profiles, {
+
+        Service.destroy({ truncate: { cascade: true } }).then(() => {
+            Service.bulkCreate(services, {
                 returning: true,
                 ignoreDuplicates: false,
             }).then(() => {
@@ -69,7 +121,7 @@ async function init() {
         });
     }
 
-    async.waterfall([userSeeder, profileSeeder], (err) => {
+    async.waterfall([userSeeder, serviceSeeder], (err) => {
         if (err) console.error(err);
         else console.log("DB seed completed");
         process.exit();

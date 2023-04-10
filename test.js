@@ -1,5 +1,4 @@
-const obj = {
-    name: "iqbal",
-};
-
-console.log(obj);
+/*
+user seeder
+service seeder
+*/
