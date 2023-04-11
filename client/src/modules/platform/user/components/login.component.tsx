@@ -9,10 +9,7 @@ const Login: React.FC = () => {
     return (
         <div className="container-fluid vh-100 d-flex justify-content-center align-items-center login-background">
             <div className="card p-3" style={{ borderRadius: "10px" }}>
-                <Typography
-                    className="text-center mb-4 fs-2"
-                    element="iCommerce"
-                />
+                <Typography className="text-center mb-4 fs-2" element="iBlog" />
                 <Formik
                     initialValues={initialValues}
                     validationSchema={loginSchema}
